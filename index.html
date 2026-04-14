@@ -8,6 +8,12 @@
     /* Reset & Base */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: #0a0a14; font-family: system-ui, -apple-system, sans-serif; color: #fff; line-height: 1.5; }
+    
+    /* This makes the actual scroll movement smooth instead of a jump */
+    html {
+      scroll-behavior: smooth;
+    }
+
     a { text-decoration: none; color: inherit; }
 
     .game-page { max-width: 900px; margin: 0 auto; padding: 2rem; }
@@ -55,7 +61,7 @@
       position: relative;
     }
     .hero-title {
-      font-size: clamp(32px, 8vw, 52px); /* Responsive font size */
+      font-size: clamp(32px, 8vw, 52px);
       font-weight: 700;
       color: #fff;
       line-height: 1.1;
@@ -83,6 +89,7 @@
       cursor: pointer;
       transition: all 0.2s;
       border: none;
+      text-align: center;
     }
     .btn-primary { background: #534AB7; color: #fff; }
     .btn-primary:hover { background: #6358cc; transform: translateY(-1px); }
@@ -94,7 +101,7 @@
     }
     .btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
 
-    /* STATS - Improved Responsiveness */
+    /* STATS */
     .stats-bar {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -112,13 +119,13 @@
     .stat-label { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px; }
 
     /* FEATURES */
-    .section-header { margin-top: 2rem; }
     .section-title {
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: rgba(255,255,255,0.4);
       margin-bottom: 1rem;
+      margin-top: 2rem;
     }
     .features {
       display: grid;
@@ -179,7 +186,7 @@
 <body>
   <main class="game-page">
 
-    <section class="hero">
+    <section class="hero" id="top">
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="hero-glow" aria-hidden="true"></div>
       <span class="badge">Season 4 — now live</span>
@@ -191,7 +198,7 @@
       </div>
     </section>
 
-    <section class="stats-bar" aria-label="Game Statistics">
+    <section class="stats-bar">
       <div class="stat-card">
         <div class="stat-num">4.2M</div>
         <div class="stat-label">Active players</div>
@@ -206,93 +213,63 @@
       </div>
     </section>
 
-    <section aria-labelledby="features-title">
-      <h2 id="features-title" class="section-title">Core features</h2>
-      <div class="features">
-        <article class="feature-card">
-          <div class="feature-icon" style="background: #1e1a3a;">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <circle cx="8" cy="8" r="5" stroke="#7F77DD" stroke-width="1.5"/>
-              <circle cx="8" cy="8" r="2" fill="#7F77DD"/>
-            </svg>
-          </div>
-          <h3>Tactical combat</h3>
-          <p>5v5 squad battles with deep ability synergies and real-time strategy.</p>
-        </article>
-        
-        <article class="feature-card">
-          <div class="feature-icon" style="background: #0e2a20;">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <rect x="2" y="5" width="12" height="8" rx="2" stroke="#1D9E75" stroke-width="1.5"/>
-              <path d="M5 5V4a3 3 0 016 0v1" stroke="#1D9E75" stroke-width="1.5"/>
-            </svg>
-          </div>
-          <h3>Ranked seasons</h3>
-          <p>Climb from Bronze to Void Legend with exclusive seasonal rewards.</p>
-        </article>
+    <h2 class="section-title">Core features</h2>
+    <div class="features">
+      <article class="feature-card">
+        <div class="feature-icon" style="background: #1e1a3a;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" stroke="#7F77DD" stroke-width="1.5"/><circle cx="8" cy="8" r="2" fill="#7F77DD"/></svg></div>
+        <h3>Tactical combat</h3>
+        <p>5v5 squad battles with deep ability synergies and real-time strategy.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon" style="background: #0e2a20;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="12" height="8" rx="2" stroke="#1D9E75" stroke-width="1.5"/><path d="M5 5V4a3 3 0 016 0v1" stroke="#1D9E75" stroke-width="1.5"/></svg></div>
+        <h3>Ranked seasons</h3>
+        <p>Climb from Bronze to Void Legend with exclusive rewards.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon" style="background: #2a1f0a;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.8 3.6 4 .6-2.9 2.8.7 4L8 11l-3.6 1.9.7-4L2.1 6.2l4-.6L8 2z" stroke="#EF9F27" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <h3>Custom loadouts</h3>
+        <p>Thousands of weapon mods to craft your play style.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon" style="background: #2a120a;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8a5 5 0 1110 0A5 5 0 013 8z" stroke="#D85A30" stroke-width="1.5"/><path d="M8 5v3l2 1.5" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h3>Cross-platform</h3>
+        <p>Play seamlessly across PC, console, and mobile.</p>
+      </article>
+    </div>
 
-        <article class="feature-card">
-          <div class="feature-icon" style="background: #2a1f0a;">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M8 2l1.8 3.6 4 .6-2.9 2.8.7 4L8 11l-3.6 1.9.7-4L2.1 6.2l4-.6L8 2z" stroke="#EF9F27" stroke-width="1.5" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <h3>Custom loadouts</h3>
-          <p>Thousands of weapon mods and skins to craft your play style.</p>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-icon" style="background: #2a120a;">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M3 8a5 5 0 1110 0A5 5 0 013 8z" stroke="#D85A30" stroke-width="1.5"/>
-              <path d="M8 5v3l2 1.5" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h3>Cross-platform</h3>
-          <p>Play seamlessly across PC, console, and mobile with full support.</p>
-        </article>
-      </div>
-    </section>
-
-    <section aria-labelledby="news-title">
-      <h2 id="news-title" class="section-title">Latest updates</h2>
-      <div class="news">
-        <a href="#" class="news-item">
-          <div class="news-dot" style="background:#7F77DD;"></div>
-          <div>
-            <div class="news-tag" style="color:#7F77DD;">Patch 4.2</div>
-            <div class="news-text">New Voidgate map drops with destructible terrain</div>
-          </div>
-          <div class="news-date">Apr 12</div>
-        </a>
-        <a href="#" class="news-item">
-          <div class="news-dot" style="background:#1D9E75;"></div>
-          <div>
-            <div class="news-tag" style="color:#1D9E75;">Event</div>
-            <div class="news-text">Double XP weekend — this Friday through Sunday</div>
-          </div>
-          <div class="news-date">Apr 10</div>
-        </a>
-        <a href="#" class="news-item">
-          <div class="news-dot" style="background:#EF9F27;"></div>
-          <div>
-            <div class="news-tag" style="color:#EF9F27;">Balance</div>
-            <div class="news-text">Phantom class rework — full patch notes inside</div>
-          </div>
-          <div class="news-date">Apr 8</div>
-        </a>
-      </div>
-    </section>
+    <h2 class="section-title">Latest updates</h2>
+    <div class="news">
+      <a href="#" class="news-item">
+        <div class="news-dot" style="background:#7F77DD;"></div>
+        <div><div class="news-tag" style="color:#7F77DD;">Patch 4.2</div><div class="news-text">New Voidgate map drops</div></div>
+        <div class="news-date">Apr 12</div>
+      </a>
+    </div>
 
     <section class="cta-bar">
       <div class="hero-glow" aria-hidden="true"></div>
       <h2>Ready to drop in?</h2>
       <p>Free to play. No pay-to-win. Just pure skill.</p>
       <div class="btn-group">
-        <a href="#" class="btn btn-primary">Create account</a>
+        <button id="cta-scroll-btn" class="btn btn-primary">Create account</button>
       </div>
     </section>
 
   </main>
+
+  <script>
+    const scrollBtn = document.getElementById('cta-scroll-btn');
+
+    scrollBtn.addEventListener('click', () => {
+      // 1. We wait for 0.9 seconds (900 milliseconds)
+      setTimeout(() => {
+        // 2. We trigger the smooth scroll to the top
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }, 900);
+    });
+  </script>
 </body>
 </html>
