@@ -1,1 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Voidrift</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0a0a14; font-family: sans-serif; color: #fff; }
 
+    .game-page { max-width: 900px; margin: 0 auto; padding: 2rem; }
+
+    /* HERO */
+    .hero {
+      min-height: 480px;
+      background: #0d0d1a;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(83,74,183,0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(83,74,183,0.15) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .hero-glow {
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(83,74,183,0.35) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%, -60%);
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(83,74,183,0.25);
+      border: 0.5px solid #7F77DD;
+      color: #AFA9EC;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .hero-title {
+      font-size: 52px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    .hero-title span { color: #7F77DD; }
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.55);
+      max-width: 420px;
+      line-height: 1.7;
+      position: relative;
+      margin-bottom: 2rem;
+    }
+    .btn-group { display: flex; gap: 12px; justify-content: center; position: relative; flex-wrap: wrap; }
+    .btn-primary {
+      background: #534AB7;
+      color: #fff;
+      border: none;
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: #6358cc; }
+    .btn-ghost {
+      background: transparent;
+      color: rgba(255,255,255,0.7);
+      border: 0.5px solid rgba(255,255,255,0.2);
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+    /* STATS */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 1.5rem 0;
+    }
+    .stat-card {
+      background: #13131f;
+      border: 0.5px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .stat-num { font-size: 28px; font-weight: 500; color: #7F77DD; }
+    .stat-label { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+    /* FEATURES */
+    .section-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 1rem;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 1.5rem 0;
+    }
+    .feature-card {
+      background: #13131f;
+      border: 0.5px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .feature-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+    }
+    .feature-card h3 { font-size: 14px; font-weight: 500; margin-bottom: 6px; color: #fff; }
+    .feature-card p { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+
+    /* NEWS */
+    .news {
+      background: #13131f;
+      border: 0.5px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+    .news-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 1rem 1.25rem;
+      border-bottom: 0.5px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+    }
+    .news-item:last-child { border-bottom: none; }
+    .news-item:hover { background: rgba(255,255,255,0.03); }
+    .news-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .news-tag { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px; }
+    .news-text { font-size: 14px; font-weight: 500; color: #fff; }
+    .news-date { font-size: 12px; color: rgba(255,255,255,0.35); margin-left: auto; flex-shrink: 0; }
+
+    /* CTA */
+    .cta-bar {
+      background: #0d0d1a;
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-bar h2 { color: #fff; font-size: 26px; font-weight: 500; position: relative; margin-bottom: 0.75rem; }
+    .cta-bar p { color: rgba(255,255,255,0.5); font-size: 14px; position: relative; margin-bottom: 1.5rem; }
+  </style>
+</head>
+<body>
+  <div class="game-page">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-grid"></div>
+      <div class="hero-glow"></div>
+      <span class="badge">Season 4 — now live</span>
+      <h1 class="hero-title">Void<span>rift</span></h1>
+      <p class="hero-sub">A fast-paced tactical shooter set at the edge of the universe. Squad up. Dominate. Survive.</p>
+      <div class="btn-group">
+        <button class="btn-primary">Play for free</button>
+        <button class="btn-ghost">Watch trailer</button>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-num">4.2M</div>
+        <div class="stat-label">Active players</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">98ms</div>
+        <div class="stat-label">Avg. server ping</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">120+</div>
+        <div class="stat-label">Maps & modes</div>
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <p class="section-title">Core features</p>
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon" style="background: #1e1a3a;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="5" stroke="#7F77DD" stroke-width="1.5"/>
+            <circle cx="8" cy="8" r="2" fill="#7F77DD"/>
+          </svg>
+        </div>
+        <h3>Tactical combat</h3>
+        <p>5v5 squad battles with deep ability synergies and real-time strategy.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: #0e2a20;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="2" y="5" width="12" height="8" rx="2" stroke="#1D9E75" stroke-width="1.5"/>
+            <path d="M5 5V4a3 3 0 016 0v1" stroke="#1D9E75" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h3>Ranked seasons</h3>
+        <p>Climb from Bronze to Void Legend with exclusive seasonal rewards.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: #2a1f0a;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 2l1.8 3.6 4 .6-2.9 2.8.7 4L8 11l-3.6 1.9.7-4L2.1 6.2l4-.6L8 2z" stroke="#EF9F27" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Custom loadouts</h3>
+        <p>Thousands of weapon mods, skins, and ability upgrades to craft your play style.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: #2a120a;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8a5 5 0 1110 0A5 5 0 013 8z" stroke="#D85A30" stroke-width="1.5"/>
+            <path d="M8 5v3l2 1.5" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Cross-platform</h3>
+        <p>Play seamlessly across PC, console, and mobile with full crossplay support.</p>
+      </div>
+    </div>
+
+    <!-- NEWS -->
+    <p class="section-title">Latest updates</p>
+    <div class="news">
+      <div class="news-item">
+        <div class="news-dot" style="background:#7F77DD;"></div>
+        <div>
+          <div class="news-tag" style="color:#7F77DD;">Patch 4.2</div>
+          <div class="news-text">New Voidgate map drops with destructible terrain</div>
+        </div>
+        <div class="news-date">Apr 12</div>
+      </div>
+      <div class="news-item">
+        <div class="news-dot" style="background:#1D9E75;"></div>
+        <div>
+          <div class="news-tag" style="color:#1D9E75;">Event</div>
+          <div class="news-text">Double XP weekend — this Friday through Sunday</div>
+        </div>
+        <div class="news-date">Apr 10</div>
+      </div>
+      <div class="news-item">
+        <div class="news-dot" style="background:#EF9F27;"></div>
+        <div>
+          <div class="news-tag" style="color:#EF9F27;">Balance</div>
+          <div class="news-text">Phantom class rework — full patch notes inside</div>
+        </div>
+        <div class="news-date">Apr 8</div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-bar">
+      <div class="hero-glow"></div>
+      <h2>Ready to drop in?</h2>
+      <p>Free to play. No pay-to-win. Just pure skill.</p>
+      <div class="btn-group">
+        <button class="btn-primary">Create account</button>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
