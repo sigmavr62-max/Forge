@@ -1,275 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Voidrift | Tactical Shooter</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navigation Shell</title>
+  <link rel="stylesheet" href="https://static.rbxcdn.com/css/page___86580556e80931665a837c768997a391_m.css">
   <style>
-    /* Reset & Base */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #0a0a14; font-family: system-ui, -apple-system, sans-serif; color: #fff; line-height: 1.5; }
+    /* Basic padding to account for the fixed header */
+    body {
+      margin: 0;
+      padding-top: 60px;
+      background-color: #f4f4f4;
+    }
     
-    /* This makes the actual scroll movement smooth instead of a jump */
-    html {
-      scroll-behavior: smooth;
-    }
-
-    a { text-decoration: none; color: inherit; }
-
-    .game-page { max-width: 900px; margin: 0 auto; padding: 2rem; }
-
-    /* HERO */
-    .hero {
-      min-height: 480px;
-      background: #0d0d1a;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 3rem 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-grid {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(83,74,183,0.15) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(83,74,183,0.15) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
-    }
-    .hero-glow {
-      position: absolute;
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(83,74,183,0.35) 0%, transparent 70%);
-      top: 50%; left: 50%; transform: translate(-50%, -60%);
-      pointer-events: none;
-    }
-    .badge {
+    /* Ensure the logo icons are visible if the stylesheet is missing */
+    .icon-logo, .icon-logo-r {
       display: inline-block;
-      background: rgba(83,74,183,0.25);
-      border: 0.5px solid #7F77DD;
-      color: #AFA9EC;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 999px;
-      margin-bottom: 1.5rem;
-      position: relative;
+      vertical-align: middle;
     }
-    .hero-title {
-      font-size: clamp(32px, 8vw, 52px);
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.1;
-      letter-spacing: -1px;
-      position: relative;
-      margin-bottom: 1rem;
-    }
-    .hero-title span { color: #7F77DD; }
-    .hero-sub {
-      font-size: 16px;
-      color: rgba(255,255,255,0.55);
-      max-width: 420px;
-      line-height: 1.7;
-      position: relative;
-      margin-bottom: 2rem;
-    }
-    .btn-group { display: flex; gap: 12px; justify-content: center; position: relative; flex-wrap: wrap; }
-    
-    .btn {
-      display: inline-block;
-      padding: 13px 28px;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: none;
-      text-align: center;
-    }
-    .btn-primary { background: #534AB7; color: #fff; }
-    .btn-primary:hover { background: #6358cc; transform: translateY(-1px); }
-    
-    .btn-ghost {
-      background: transparent;
-      color: rgba(255,255,255,0.7);
-      border: 0.5px solid rgba(255,255,255,0.2);
-    }
-    .btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
 
-    /* STATS */
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      margin: 1.5rem 0;
+    /* Custom scrollbar for the left nav flex container */
+    .scroll-y {
+      overflow-y: auto;
+      max-height: 100vh;
     }
-    .stat-card {
-      background: #13131f;
-      border: 0.5px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      padding: 1.25rem;
-      text-align: center;
-    }
-    .stat-num { font-size: 28px; font-weight: 500; color: #7F77DD; }
-    .stat-label { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px; }
 
-    /* FEATURES */
-    .section-title {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 1rem;
-      margin-top: 2rem;
+    /* RoExport Custom Style integration */
+    #nav-roexport:hover {
+      opacity: 0.9;
     }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      margin: 1rem 0 1.5rem;
-    }
-    .feature-card {
-      background: #13131f;
-      border: 0.5px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      padding: 1.25rem;
-    }
-    .feature-icon {
-      width: 36px; height: 36px;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 12px;
-    }
-    .feature-card h3 { font-size: 14px; font-weight: 500; margin-bottom: 6px; color: #fff; }
-    .feature-card p { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.5; }
-
-    /* NEWS */
-    .news {
-      background: #13131f;
-      border: 0.5px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 1.5rem;
-    }
-    .news-item {
-      display: flex; align-items: center; gap: 16px;
-      padding: 1rem 1.25rem;
-      border-bottom: 0.5px solid rgba(255,255,255,0.06);
-      transition: background 0.2s;
-    }
-    .news-item:last-child { border-bottom: none; }
-    .news-item:hover { background: rgba(255,255,255,0.03); }
-    .news-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .news-tag { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px; }
-    .news-text { font-size: 14px; font-weight: 500; color: #fff; }
-    .news-date { font-size: 12px; color: rgba(255,255,255,0.35); margin-left: auto; flex-shrink: 0; }
-
-    /* CTA */
-    .cta-bar {
-      background: #0d0d1a;
-      border-radius: 12px;
-      padding: 2.5rem 2rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      margin-top: 2rem;
-    }
-    .cta-bar h2 { color: #fff; font-size: 26px; font-weight: 500; position: relative; margin-bottom: 0.75rem; }
-    .cta-bar p { color: rgba(255,255,255,0.5); font-size: 14px; position: relative; margin-bottom: 1.5rem; }
   </style>
 </head>
 <body>
-  <main class="game-page">
 
-    <section class="hero" id="top">
-      <div class="hero-grid" aria-hidden="true"></div>
-      <div class="hero-glow" aria-hidden="true"></div>
-      <span class="badge">Season 4 — now live</span>
-      <h1 class="hero-title">Void<span>rift</span></h1>
-      <p class="hero-sub">A fast-paced tactical shooter set at the edge of the universe. Squad up. Dominate. Survive.</p>
-      <div class="btn-group">
-        <a href="#" class="btn btn-primary">Play for free</a>
-        <a href="#" class="btn btn-ghost">Watch trailer</a>
+  <div id="navigation-container" class="builder-font ixp-marketplace-rename-treatment" data-number-of-autocomplete-suggestions="7" data-is-redirect-library-to-creator-marketplace-enabled="True" data-platform-event-left-nav-entry-start-time="10/23/2025 16:00:00" data-platform-event-left-nav-entry-end-time="11/03/2025 17:00:00" data-platform-event-left-nav-url="https://www.roblox.com/spotlight/halloween-spotlight">
+    
+    <div id="header" class="navbar-fixed-top rbx-header" role="navigation"> 
+      <div class="container-fluid"> 
+        <div class="rbx-navbar-header"> 
+          <div id="header-menu-icon" class="rbx-nav-collapse">
+            <button type="button" class="btn-primary-xs btn-min-width" id="skip-to-main-content">Skip to Main Content</button>
+            <button type="button" class="menu-button btn-navigation-nav-menu-md" title="nav menu"><span class="icon-nav-menu"></span></button>
+          </div> 
+          <div class="navbar-header"> 
+            <a id="nav-logo-link" class="navbar-brand" href="/home"> <span class="icon-logo"></span><span class="icon-logo-r"></span> </a> 
+          </div> 
+        </div> 
+
+        <ul class="nav rbx-navbar hidden-xs hidden-sm col-md-5 col-lg-4"> 
+          <li> <a id="nav-charts-md-link" class="font-header-2 nav-menu-title text-header" href="/charts">Charts</a> </li> 
+          <li> <a id="nav-marketplace-md-link" class="font-header-2 nav-menu-title text-header" href="/catalog">Marketplace</a> </li> 
+          <li> <a id="header-develop-md-link" class="font-header-2 nav-menu-title text-header" href="https://create.roblox.com/">Create</a> </li> 
+          <li id="navigation-robux-container"><div><a class="font-header-2 nav-menu-title text-header robux-menu-btn" href="https://www.roblox.com/upgrades/robux?ctx=navpopover">Robux</a></div></li> 
+        </ul> 
+
+        <div id="right-navigation-header">
+          <div data-testid="navigation-search-input" class="navbar-left navbar-search col-xs-5 col-sm-6 col-md-2 col-lg-3 shown" role="search">
+            <div class="input-group">
+              <form name="search-form" action="/search">
+                <div class="form-has-feedback">
+                  <input id="navbar-search-input" type="search" name="search-bar" class="form-control input-field new-input-field" placeholder="Search" maxlength="120">
+                </div>
+              </form>
+              <div class="input-group-btn">
+                <button class="input-addon-btn" type="submit"><span class="icon-common-search-sm"></span></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="navbar-right rbx-navbar-right">
+            <ul class="nav navbar-right rbx-navbar-icon-group">
+              <div class="age-bracket-label text-header">
+                <a class="text-link dynamic-overflow-container" href="/users/profile">
+                  <span class="avatar avatar-headshot-xs">
+                    <span class="thumbnail-2d-container avatar-card-image">
+                      <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-7760407A58BC7AE8CA454DA3CC94FCFB-Png/150/150/AvatarHeadshot/Webp/noFilter" alt="polar">
+                    </span>
+                  </span>
+                  <span class="text-overflow age-bracket-label-username font-caption-header">polar</span>
+                </a>
+              </div>
+              <li id="navbar-robux" class="navbar-icon-item">
+                <button type="button" class="btn-navigation-nav-robux-md">
+                  <span id="nav-robux-icon" class="nav-robux-icon rbx-menu-item">
+                    <span class="icon-robux-28x28" id="nav-robux"></span>
+                    <span class="rbx-text-navbar-right text-header" id="nav-robux-amount">0</span>
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div> 
+      </div> 
+    </div> 
+
+    <div id="left-navigation-container">
+      <div class="left-nav fixed left-[0] z-[1001] bg-surface-0">
+        <div class="flex width-[289px] height-full scroll-y">
+          <div class="width-[288px]">
+            <div class="padding-x-large padding-y-medium flex flex-col gap-large">
+              <nav>
+                <ul class="flex flex-col gap-small">
+                  <li>
+                    <a href="/users/profile" class="content-emphasis text-title-large flex items-center gap-small padding-left-xsmall radius-medium relative">
+                      <span class="size-1000 flex justify-center items-center">
+                        <span class="radius-circle clip size-600">
+                          <span class="thumbnail-2d-container">
+                            <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-7760407A58BC7AE8CA454DA3CC94FCFB-Png/150/150/AvatarHeadshot/Webp/noFilter" alt="polar">
+                          </span>
+                        </span>
+                      </span>
+                      <span>polar</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/home" class="content-emphasis text-title-large flex items-center gap-small padding-left-xsmall radius-medium bg-surface-300">
+                      <span class="size-1000 flex justify-center items-center"><span class="icon icon-regular-house"></span></span>
+                      <span>Home</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" id="nav-roexport" class="content-emphasis text-title-large flex items-center gap-small radius-medium" style="background: linear-gradient(135deg, rgb(94, 203, 140) 0%, rgb(45, 138, 78) 100%); justify-content: center; padding: 10px; color: white;">
+                      <span class="min-width-0 text-truncate-end">RoExport</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/premium" class="foundation-web-button relative flex items-center justify-center bg-action-standard radius-medium height-1000" style="color: white;">
+                      <span>Get Premium</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
+    </div> 
 
-    <section class="stats-bar">
-      <div class="stat-card">
-        <div class="stat-num">4.2M</div>
-        <div class="stat-label">Active players</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">98ms</div>
-        <div class="stat-label">Avg. server ping</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">120+</div>
-        <div class="stat-label">Maps & modes</div>
-      </div>
-    </section>
+    <div id="verificationUpsell-container"></div>
+    <div id="navigation-account-switcher-container"></div>
+  </div>
 
-    <h2 class="section-title">Core features</h2>
-    <div class="features">
-      <article class="feature-card">
-        <div class="feature-icon" style="background: #1e1a3a;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" stroke="#7F77DD" stroke-width="1.5"/><circle cx="8" cy="8" r="2" fill="#7F77DD"/></svg></div>
-        <h3>Tactical combat</h3>
-        <p>5v5 squad battles with deep ability synergies and real-time strategy.</p>
-      </article>
-      <article class="feature-card">
-        <div class="feature-icon" style="background: #0e2a20;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="12" height="8" rx="2" stroke="#1D9E75" stroke-width="1.5"/><path d="M5 5V4a3 3 0 016 0v1" stroke="#1D9E75" stroke-width="1.5"/></svg></div>
-        <h3>Ranked seasons</h3>
-        <p>Climb from Bronze to Void Legend with exclusive rewards.</p>
-      </article>
-      <article class="feature-card">
-        <div class="feature-icon" style="background: #2a1f0a;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.8 3.6 4 .6-2.9 2.8.7 4L8 11l-3.6 1.9.7-4L2.1 6.2l4-.6L8 2z" stroke="#EF9F27" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
-        <h3>Custom loadouts</h3>
-        <p>Thousands of weapon mods to craft your play style.</p>
-      </article>
-      <article class="feature-card">
-        <div class="feature-icon" style="background: #2a120a;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8a5 5 0 1110 0A5 5 0 013 8z" stroke="#D85A30" stroke-width="1.5"/><path d="M8 5v3l2 1.5" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        <h3>Cross-platform</h3>
-        <p>Play seamlessly across PC, console, and mobile.</p>
-      </article>
-    </div>
-
-    <h2 class="section-title">Latest updates</h2>
-    <div class="news">
-      <a href="#" class="news-item">
-        <div class="news-dot" style="background:#7F77DD;"></div>
-        <div><div class="news-tag" style="color:#7F77DD;">Patch 4.2</div><div class="news-text">New Voidgate map drops</div></div>
-        <div class="news-date">Apr 12</div>
-      </a>
-    </div>
-
-    <section class="cta-bar">
-      <div class="hero-glow" aria-hidden="true"></div>
-      <h2>Ready to drop in?</h2>
-      <p>Free to play. No pay-to-win. Just pure skill.</p>
-      <div class="btn-group">
-        <button id="cta-scroll-btn" class="btn btn-primary">Create account</button>
-      </div>
-    </section>
-
-  </main>
-
-  <script>
-    const scrollBtn = document.getElementById('cta-scroll-btn');
-
-    scrollBtn.addEventListener('click', () => {
-      // 1. We wait for 0.9 seconds (900 milliseconds)
-      setTimeout(() => {
-        // 2. We trigger the smooth scroll to the top
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      }, 900);
-    });
-  </script>
 </body>
 </html>
